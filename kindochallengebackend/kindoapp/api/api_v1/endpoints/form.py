@@ -32,6 +32,6 @@ async def save_register_by_parent_form(registration: RegistrationCreate,
 def register_with_payment(payload: FullRegistrationRequest, registration_service: RegistrationService = Depends(get_registration_service),
                           payment_service: PaymentService = Depends(get_payment_service)):
      reg_id = registration_service.register_with_payment(registration=payload.registration)
-     return payment_service.process(construct_pay_request(payload), reg_id)
+     return payment_service.process(construct_pay_request(payload), reg_id, payload.registration.email)
 
 

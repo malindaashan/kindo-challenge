@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from kindoapp.repository.payment_repository import PaymentRepository
 from kindoapp.schemas.full_registration import FullRegistrationRequest
 from kindoapp.schemas.payment import PaymentLegacyCreate, PaymentCreate
+from kindoapp.services.email_service import  send_payment_success_email
 from kindoapp.services.legacy.payment_processor import LegacyPaymentProcessor, PaymentResponse
 
 
@@ -38,9 +39,12 @@ class PaymentService:
         self.pay_repo = PaymentRepository(db)
         self.processor = LegacyPaymentProcessor()
 
-    def process(self, pay_data: PaymentLegacyCreate, reg_id: int) -> PaymentResponse:
+    def process(self, pay_data: PaymentLegacyCreate, reg_id: int, email: str) -> PaymentResponse:
         response = self.processor.process_payment(pay_data.model_dump())
-        self.pay_repo.create(construct_transaction_schema(pay_data, response, reg_id))
+        if response.success:
+            self.pay_repo.create(construct_transaction_schema(pay_data, response, reg_id))
+            send_payment_success_email(response.transaction_id, pay_data.amount, email)
+
         return PaymentResponse(
             success=response.success,
             transaction_id=response.transaction_id,

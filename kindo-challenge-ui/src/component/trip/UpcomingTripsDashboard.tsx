@@ -54,7 +54,7 @@ export default function UpcomingTripsDashboard() {
     return (
         paymentSuccess ? <PaymentSuccessModal open={paymentSuccess} onClose={() => setPaymentSuccess(false)}
                                               setStep={() => setStep(0)}/> :
-            step === 1 ? <RegisterByParentForm onSubmit={onSubmit}/> :
+            step === 1 ? <RegisterByParentForm onSubmit={onSubmit} setStep={() => setStep(0)}/> :
                 step === 2 ?
                     <OnlinePaymentForm onPay={onPay} amount={selectedRow?.cost as number} showLoader={showLoader}/> :
                     <Box

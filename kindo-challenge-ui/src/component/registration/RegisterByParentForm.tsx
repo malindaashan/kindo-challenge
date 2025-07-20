@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Box, Breadcrumbs, Button, Link, Paper, TextField, Typography,} from '@mui/material';
 
 
-export default function RegisterByParentForm({onSubmit}:any) {
+export default function RegisterByParentForm({onSubmit, setStep}:any) {
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -42,7 +42,7 @@ export default function RegisterByParentForm({onSubmit}:any) {
         <>
             <br/>
             <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" href="/">
+                <Link underline="hover" color="inherit" sx={{ cursor: 'pointer' }}  onClick={()=>setStep()}>
                     &nbsp;Upcoming trips
                 </Link>
                 {/*<Link*/}
