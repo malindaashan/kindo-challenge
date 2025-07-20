@@ -1,0 +1,35 @@
+from sqlalchemy.orm import Session
+
+from kindoapp.repository.payment_repository import PaymentRepository
+from kindoapp.schemas.full_registration import FullRegistrationRequest
+from kindoapp.schemas.payment import PaymentLegacyCreate
+from kindoapp.services.legacy.payment_processor import LegacyPaymentProcessor, PaymentResponse
+
+
+def construct_pay_request(full_registration: FullRegistrationRequest) -> PaymentLegacyCreate:
+    # Construct the legacy model
+    legacy_payment = PaymentLegacyCreate(
+        parent_name=full_registration.registration.parent_name,
+        school_id=full_registration.school.id,
+        activity_id=full_registration.registration.tripdetail_id,
+        student_name=full_registration.registration.firstname +" "+ full_registration.registration.lastname,
+        card_number=full_registration.payment.card_number,
+        expiry_date=full_registration.payment.expiry_date,
+        cvv=full_registration.payment.cvv,
+        amount=full_registration.payment.amount
+    )
+    return legacy_payment
+
+
+class PaymentService:
+    def __init__(self, db: Session):
+        self.reg_repo = PaymentRepository(db)
+        self.processor = LegacyPaymentProcessor()
+
+    def process(self, pay_data: PaymentLegacyCreate) -> PaymentResponse:
+        response = self.processor.process_payment(pay_data.model_dump())
+        return PaymentResponse(
+            success=response.success,
+            transaction_id=response.transaction_id,
+            error_message=response.error_message
+        )
