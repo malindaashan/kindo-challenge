@@ -1,1 +1,7 @@
 fastapi==0.88.0
+uvicorn
+sqlalchemy
+dotenv
+psycopg2
+psycopg2-binary
+jinja2

@@ -78,6 +78,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 async def serve_react():
     index_path = os.path.join("static", "build", "index.html")
+    print(index_path)
     with open(index_path) as f:
         html = f.read()
     return HTMLResponse(content=html, status_code=200)
