@@ -30,3 +30,6 @@ Configuration are set in .env file for backend. please add your own configs befo
 ### Architecture
 
 ![Kindo-Architecture.jpg](resources/Kindo-Architecture.jpg)
+
+#### Swagger
+https://microcodie.co/docs
