@@ -9,8 +9,8 @@ class PaymentRepository:
         self.db = db
 
     def create(self, payment: PaymentCreate) -> Payment:
-        payment_response = PaymentRepository(**payment.model_dump())
-        self.db.add(payment_response)
+        payment = Payment(**payment.model_dump())
+        self.db.add(payment)
         self.db.commit()
-        self.db.refresh(payment_response)
-        return payment_response
+        self.db.refresh(payment)
+        return payment

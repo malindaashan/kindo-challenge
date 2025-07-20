@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, constr
 
 
-class PaymentCreate(BaseModel):
+class PaymentRequest(BaseModel):
     card_number: constr(min_length=16, max_length=16)
     expiry_date: str  # MM/YY
     cvv: constr(min_length=3, max_length=3)
@@ -12,6 +12,13 @@ class PaymentCreate(BaseModel):
     school_id: Optional[int] =None
     activity_id: Optional[int] =None
 
+class PaymentCreate(BaseModel):
+    card_number: constr(min_length=16, max_length=16)
+    expiry_date: str  # MM/YY
+    amount: float
+    registration_id: int
+    transaction_id: str
+    success: bool
 
 class PaymentResponse(BaseModel):
     success: bool

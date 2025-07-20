@@ -43,18 +43,11 @@ CREATE TABLE payment (
     amount REAL NOT NULL,
     card_number VARCHAR NOT NULL,
     expiry_date VARCHAR NOT NULL,
-    school_id INTEGER NOT NULL,
-    tripdetail_id INTEGER NOT NULL,
+    success Boolean NOT NULL,
+    transaction_id VARCHAR NOT NULL,
     registration_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_tripdetail
-        FOREIGN KEY (tripdetail_id)
-        REFERENCES tripdetail(id),
-
-    CONSTRAINT fk_school
-        FOREIGN KEY (school_id)
-        REFERENCES school(id),
 
     CONSTRAINT fk_registration
         FOREIGN KEY (registration_id)
