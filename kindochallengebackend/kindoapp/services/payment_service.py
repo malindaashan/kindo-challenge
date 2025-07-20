@@ -1,3 +1,5 @@
+import threading
+
 from sqlalchemy.orm import Session
 
 from kindoapp.repository.payment_repository import PaymentRepository
@@ -43,7 +45,14 @@ class PaymentService:
         response = self.processor.process_payment(pay_data.model_dump())
         if response.success:
             self.pay_repo.create(construct_transaction_schema(pay_data, response, reg_id))
-            send_payment_success_email(response.transaction_id, pay_data.amount, email)
+
+            # Start a new thread for sending the email
+            threading.Thread(
+                target=send_payment_success_email,
+                args=(response.transaction_id, pay_data.amount, email),
+                daemon=True
+            ).start()
+
 
         return PaymentResponse(
             success=response.success,

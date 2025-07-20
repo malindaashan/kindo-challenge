@@ -1,3 +1,4 @@
+import re
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -13,7 +14,30 @@ SMTP_PORT = settings.SMTP_PORT
 
 
 def send_payment_success_email(transaction_id: int, amount: float, email: str):
-    sender = "malinda.ashan@gmail.com"
+    """
+        Sends a payment success email to the customer.
+
+        This function composes and sends a confirmation email to the given recipient
+        email address upon successful completion of a payment transaction. The email
+        typically includes details such as the transaction ID and the payment amount.
+
+        Args:
+            transaction_id (int): The unique ID of the successful transaction.
+            amount (float): The amount that was successfully charged.
+            email (str): The recipient's email address.
+
+        Raises:
+            ValueError: If the email address is invalid.
+            Exception: For any unexpected errors during the email sending process.
+
+        Returns:
+            None
+        """
+    email_regex = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
+
+    if not re.match(email_regex, email):
+        raise ValueError(f"Invalid email address: {email}")
+    sender = "payment@microcodie.co"
     recipient = email
     subject = f"Transaction Successful - {transaction_id}"
 
@@ -31,9 +55,12 @@ def send_payment_success_email(transaction_id: int, amount: float, email: str):
 
     part = MIMEText(html_content, 'html')
     msg.attach(part)
-
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-        server.starttls()
-        server.login(SMTP_USER, SMTP_PASS)
-        server.sendmail(sender, recipient, msg.as_string())
-    print("Email sent")
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(sender, recipient, msg.as_string())
+        print("Email sent")
+    except Exception as e:
+        print(f"send_payment_success_email Unexpected error: {e}")
+        raise

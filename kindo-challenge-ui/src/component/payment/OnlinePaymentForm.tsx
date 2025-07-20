@@ -14,7 +14,12 @@ export default function OnlinePaymentForm({onPay, amount, showLoader}: any) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        setFormData((prev) => ({...prev, [name]: value}));
+        let formattedValue = value;
+        if (name === "card_number") {
+            const digitsOnly = value.replace(/\D/g, '');
+            formattedValue = digitsOnly.replace(/(.{4})/g, '$1 ').trim();
+        }
+        setFormData((prev) => ({...prev, [name]: formattedValue}));
         setErrors((prev) => ({...prev, [name]: ''}));
     };
 
@@ -24,21 +29,38 @@ export default function OnlinePaymentForm({onPay, amount, showLoader}: any) {
             if (!value) newErrors[key] = 'This field is required';
         });
 
-        if (formData.card_number && !/^\d{16}$/.test(formData.card_number)) {
-            newErrors.cardNumber = 'Card number must be 16 digits';
+        if (formData.card_number && !/^\d{16}$/.test(formData.card_number.replace(/\s+/g, ''))) {
+            newErrors.card_number = 'Card number must be 16 digits';
+        }
+        if (formData.expiry_date && !isValidExpiryDate(formData.expiry_date)) {
+            newErrors.expiry_date = 'Expiry date is invalid';
         }
 
-        if (formData.cvv && !/^\d{3,4}$/.test(formData.cvv)) {
-            newErrors.cvv = 'CVV must be 3 or 4 digits';
+        if (formData.cvv && !/^\d{3}$/.test(formData.cvv)) {
+            newErrors.cvv = 'CVV must be 3 digit';
         }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+    function isValidExpiryDate(expiry: string): boolean {
+        // Check format MM/YY
+        const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        if (!regex.test(expiry)) return false;
+
+        const [monthStr, yearStr] = expiry.split('/');
+        const month = parseInt(monthStr, 10);
+        const year = parseInt('20' + yearStr, 10); // convert to 4-digit year
+
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1;
+        const currentYear = now.getFullYear();
+
+        // Check if expired
+        return year > currentYear || (year === currentYear && month >= currentMonth);
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        alert(validate())
         if (validate()) {
             onPay(formData);
         }
@@ -80,7 +102,7 @@ export default function OnlinePaymentForm({onPay, amount, showLoader}: any) {
                                     onChange={handleChange}
                                     error={!!errors.card_number}
                                     helperText={errors.card_number}
-                                    inputProps={{maxLength: 16}}
+                                    inputProps={{maxLength: 19}}
                                 />
                             </Grid>
                             <Grid>
@@ -103,7 +125,7 @@ export default function OnlinePaymentForm({onPay, amount, showLoader}: any) {
                                     onChange={handleChange}
                                     error={!!errors.cvv}
                                     helperText={errors.cvv}
-                                    inputProps={{maxLength: 4}}
+                                    inputProps={{maxLength: 3}}
                                 />
                             </Grid>
                         </Grid>

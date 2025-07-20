@@ -7,6 +7,7 @@ import OnlinePaymentForm from "../payment/OnlinePaymentForm";
 import {FullFormData, Payment, Registration, School, TripDetail} from "../types";
 import RegistrationService from "../services/RegistrationService";
 import PaymentSuccessModal from "../payment/PaymentSuccessModal";
+import PaymentUnsuccessModal from "../payment/PaymentUnsuccessModal";
 
 
 export default function UpcomingTripsDashboard() {
@@ -16,6 +17,7 @@ export default function UpcomingTripsDashboard() {
     const [registrationData, setRegistrationData] = React.useState<Registration>();
     const [showLoader, setShowLoader] = React.useState(false);
     const [paymentSuccess, setPaymentSuccess] = React.useState(false);
+    const [paymentUnSuccess, setPaymentUnSuccess] = React.useState(false);
 
     const handleRegister = (row: any): any => {
         setStep(1);
@@ -31,16 +33,18 @@ export default function UpcomingTripsDashboard() {
     const onPay = (payData: Payment) => {
         setShowLoader(true)
         payData.amount = selectedRow?.cost as number
+        payData.card_number = payData.card_number.replace(/\s+/g, '')
         const fullFormData: FullFormData = {
             payment: payData,
             registration: registrationData!,
             school: school!
         };
         RegistrationService.saveRegistrationWithPayment(fullFormData).then((response) => {
-            if (response) {
+            if (response.success) {
                 setPaymentSuccess(true)
                 setShowLoader(false)
             } else {
+                setPaymentUnSuccess(true)
                 setShowLoader(false)
                 console.log("No rows found in getAllTripDetails!")
             }
@@ -54,6 +58,7 @@ export default function UpcomingTripsDashboard() {
     return (
         paymentSuccess ? <PaymentSuccessModal open={paymentSuccess} onClose={() => setPaymentSuccess(false)}
                                               setStep={() => setStep(0)}/> :
+            paymentUnSuccess ? <PaymentUnsuccessModal open={paymentUnSuccess} onClose={() => setPaymentUnSuccess(false)}/> :
             step === 1 ? <RegisterByParentForm onSubmit={onSubmit} setStep={() => setStep(0)}/> :
                 step === 2 ?
                     <OnlinePaymentForm onPay={onPay} amount={selectedRow?.cost as number} showLoader={showLoader}/> :

@@ -23,8 +23,16 @@ export default function RegisterByParentForm({onSubmit, setStep}:any) {
 
     const validate = () => {
         const newErrors: { [key: string]: string } = {};
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         Object.entries(formData).forEach(([key, value]) => {
             if (!value) newErrors[key] = 'This field is required';
+
+            if(key === 'grade' && Number(value) > 13 ){
+               newErrors[key] = 'Enter a valid grade';
+            }
+            if(key === 'email' && !regex.test(value)){
+                newErrors[key] = 'Enter a valid email address';
+            }
         });
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -32,7 +40,6 @@ export default function RegisterByParentForm({onSubmit, setStep}:any) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        alert(validate());
         if (validate()) {
             onSubmit(formData);
         }
@@ -45,17 +52,10 @@ export default function RegisterByParentForm({onSubmit, setStep}:any) {
                 <Link underline="hover" color="inherit" sx={{ cursor: 'pointer' }}  onClick={()=>setStep()}>
                     &nbsp;Upcoming trips
                 </Link>
-                {/*<Link*/}
-                {/*    underline="hover"*/}
-                {/*    color="inherit"*/}
-                {/*    href="/material-ui/getting-started/installation/"*/}
-                {/*>*/}
-                {/*    Core*/}
-                {/*</Link>*/}
                 <Typography sx={{color: 'text.primary'}}>Register</Typography>
             </Breadcrumbs>
 
-            <Paper elevation={1} sx={{p: 4, maxWidth: 700, mx: 'auto'}}>
+            <Paper elevation={1} sx={{p: 6, minWidth: 500, maxWidth: 700, mx: 'auto'}}>
                 <Typography variant="h5" gutterBottom>
                     Trip Registration
                 </Typography>
