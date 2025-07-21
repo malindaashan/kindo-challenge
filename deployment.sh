@@ -9,7 +9,7 @@ rm -rf kindo-challenge-ui/build
 rm -rf kindo-challenge-ui/static
 
 
-mkdir sinhala-song-predictor-backend/static
+mkdir kindo-challenge-ui/static
 
 
 npm install
