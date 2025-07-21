@@ -64,7 +64,7 @@ def send_payment_success_email(transaction_id: int, amount: float, email: str):
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
             server.sendmail(sender, recipient, msg.as_string())
-        logger.info(f"Email sent email - {recipient} request_id:{get_request_id()}")
+        logger.info(f"Email sent email - {recipient}")
     except Exception as e:
-        logger.info(f"Email Sending, Unexpected error: {e} request_id:{get_request_id()}")
+        logger.info(f"Email Sending, Unexpected error: {e}")
         raise
