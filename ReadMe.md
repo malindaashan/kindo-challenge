@@ -31,5 +31,10 @@ Configuration are set in .env file for backend. please add your own configs befo
 
 ![Kindo-Architecture.jpg](resources/Kindo-Architecture.jpg)
 
+### assumptions
+
+* Email sending failure should not cause the API response to fail, especially when the payment was successful.
+
+
 #### Swagger
 https://microcodie.co/docs
