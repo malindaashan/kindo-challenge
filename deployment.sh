@@ -16,7 +16,7 @@ npm install
 
 npm run build
 
-cp -r build/* static/
+cp -r build/* static/*
 
 cd ../
 
@@ -27,6 +27,5 @@ source myenv/nv/bin/activate
 uvicorn kindoapp.main:app --host 0.0.0.0 --port 8000 &
 
 sudo systemctl status nginx.service
-
 
 echo "Deployment completed"
