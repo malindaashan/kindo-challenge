@@ -6,8 +6,8 @@ import RegisterByParentForm from "../registration/RegisterByParentForm";
 import OnlinePaymentForm from "../payment/OnlinePaymentForm";
 import {FullFormData, Payment, Registration, School, TripDetail} from "../types";
 import RegistrationService from "../services/RegistrationService";
-import PaymentSuccessModal from "../payment/PaymentSuccessModal";
-import PaymentUnsuccessModal from "../payment/PaymentUnsuccessModal";
+import PaymentSuccessModal from "../payment/modal/PaymentSuccessModal";
+import PaymentUnsuccessModal from "../payment/modal/PaymentUnsuccessModal";
 
 
 export default function UpcomingTripsDashboard() {

@@ -1,3 +1,4 @@
+import logging
 import re
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -6,11 +7,14 @@ from email.mime.text import MIMEText
 from jinja2 import FileSystemLoader, Environment
 
 from kindoapp.config import settings
+from kindoapp.config.context_store import get_request_id
 
 SMTP_USER = settings.SMTP_USER
 SMTP_PASS = settings.SMTP_PASS
 SMTP_HOST = settings.SMTP_HOST
 SMTP_PORT = settings.SMTP_PORT
+
+logger = logging.getLogger(__name__)
 
 
 def send_payment_success_email(transaction_id: int, amount: float, email: str):
@@ -60,7 +64,7 @@ def send_payment_success_email(transaction_id: int, amount: float, email: str):
             server.starttls()
             server.login(SMTP_USER, SMTP_PASS)
             server.sendmail(sender, recipient, msg.as_string())
-        print("Email sent")
+        logger.info(f"Email sent email - {recipient} request_id:{get_request_id()}")
     except Exception as e:
-        print(f"send_payment_success_email Unexpected error: {e}")
+        logger.info(f"Email Sending, Unexpected error: {e} request_id:{get_request_id()}")
         raise
