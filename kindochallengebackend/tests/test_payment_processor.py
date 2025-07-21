@@ -32,7 +32,7 @@ def set_up_legacy_pay_data():
     return sample_payment
 
 def test_success_payment():
-
+    """Test that payment is success."""
     with patch('random.random', return_value=0.2):
         processor = LegacyPaymentProcessor()
         response = processor.process_payment(payment_data=set_up_legacy_pay_data().model_dump())
@@ -50,7 +50,7 @@ def test_random_payment_failure():
 
 
 def test_invalid_expiry_card():
-    """Test a successful payment with all valid data."""
+    """Test a successful payment with invalid expiry valid data."""
     with patch('random.random', return_value=0.2):
         processor = LegacyPaymentProcessor()
         response = processor.process_payment(payment_data=set_up_invalid_expiry_data().model_dump())
