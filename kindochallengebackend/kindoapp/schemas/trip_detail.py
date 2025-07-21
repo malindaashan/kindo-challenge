@@ -1,14 +1,16 @@
 # Schema for creating users
-from pydantic import BaseModel
+from typing import Optional
+
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import relationship
 
-from kindoapp.models.school import School
-from kindoapp.models.trip_detail import TripDetail
 
 
 class School(BaseModel):
+    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
     id: int
     school_name: str
+
 
 class TripDetailCreate(BaseModel):
     id: int
@@ -18,18 +20,17 @@ class TripDetailCreate(BaseModel):
     date: str
     cost: float
 
-class TripDetailResponse(BaseModel):
-    id: int
-    trip_name: str
-    trip_location: str
-    grade: int
-    date: str
-    cost: float
+
+class TripDetailInDBBase(TripDetailCreate):
+    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
     school: School
 
-    class Config:
-        orm_mode = True
-        from_attributes = True
+class TripDetailResponse(BaseModel):
+    success: bool
+    data: list[TripDetailInDBBase]
+    errorMessage: Optional[str]  = None
 
-School.trips = relationship("TripDetail", back_populates="school")
-TripDetail.school = relationship("School", back_populates="trips")
+
+
+School.trips = relationship("TripDetailInDBBase", back_populates="school")
+TripDetailInDBBase.school = relationship("School", back_populates="trips")

@@ -57,7 +57,7 @@ async def logging_middleware(request: Request, call_next):
     # Log Request
     logger.info(f"action=request_start; method={request.method}; request_id={request_id}; "
                 f"url={str(request.url)}; request_params={request.path_params};  "
-                f"request.query_params={request.query_params}; user_agent={request.headers.get('user-agent')} ")
+                f"request.query_params={request.query_params}; user_agent={request.headers.get('user-agent')}; ")
 
     response = await call_next(request)
 
@@ -65,23 +65,23 @@ async def logging_middleware(request: Request, call_next):
     process_time = time.time() - start_time
     logger.info(
         f"action=request_complete; method:{request.method};  "
-        f"request_id={request_id} url={str(request.url)}; status_code={response.status_code}; "
-        f"process_time_ms={round(process_time * 1000, 2)}")
+        f"request_id={request_id}; url={str(request.url)}; status_code={response.status_code}; "
+        f"process_time_ms={round(process_time * 1000, 2)};")
     return response
 
 
 def generate_unique_request_id(length):
     return int(''.join([str(random.randint(0, 10)) for _ in range(length)]))
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-async def serve_react():
-    index_path = os.path.join("static", "build", "index.html")
-    print(index_path)
-    with open(index_path) as f:
-        html = f.read()
-    return HTMLResponse(content=html, status_code=200)
+# @app.get("/")
+# async def serve_react():
+#     index_path = os.path.join("static", "build", "index.html")
+#     print(index_path)
+#     with open(index_path) as f:
+#         html = f.read()
+#     return HTMLResponse(content=html, status_code=200)
 
 @app.get("/servicecheck")
 async def service_check():

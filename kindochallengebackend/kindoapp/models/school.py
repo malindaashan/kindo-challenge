@@ -1,6 +1,4 @@
-
-
-from sqlalchemy import Column, Integer, Float, String, func, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from kindoapp.config.database import Base
@@ -11,5 +9,3 @@ class School(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     school_name = Column(String)
-
-    trips = relationship("TripDetail", back_populates="school")

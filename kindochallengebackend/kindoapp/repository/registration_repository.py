@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
 from kindoapp.models.registration import Registration
-from kindoapp.models.trip_detail import TripDetail
 from kindoapp.schemas.registration import RegistrationCreate
 
 

@@ -22,18 +22,17 @@ export default function
     useEffect(() => {
         TripDetailService.getAllTripDetails().then((response) => {
             setShowLoader(true)
-            if (response) {
-                if (response.length > 0) {
-                    setRows(response)
-                    setShowLoader(false)
-                }
+
+            if (response.success) {
+                setRows(response.data)
+                setShowLoader(false)
             } else {
                 setShowLoader(false)
-                console.log("No rows found in getAllTripDetails!")
+                console.log("Error in getAllTripDetails")
             }
         }).catch((ex) => {
             setShowLoader(false)
-            console.log("Error in getAllTripDetails")
+            console.log("Exception occurred in getAllTripDetails")
             console.log(ex)
         });
     }, []);
