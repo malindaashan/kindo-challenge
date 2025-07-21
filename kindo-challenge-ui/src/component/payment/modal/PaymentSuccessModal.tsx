@@ -34,6 +34,7 @@ const PaymentSuccessModal: React.FC<PaymentSuccessModalProps> = ({open, onClose,
                     textAlign: 'center',
                 }}
             >
+
                 <Typography variant="h6" gutterBottom>
                     <CheckCircleIcon/> Payment Successful!
                 </Typography>
