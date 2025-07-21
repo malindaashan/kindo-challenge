@@ -18,9 +18,11 @@ jobs:
 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
-        env:
+        with:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_PEM_KEY }}
+          sshPrivateKey : ${{ secrets.EC2_PEM_KEY }}
           REMOTE_HOST: ${{ secrets.HOST }}
+          remoteHost : ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
           script: |
