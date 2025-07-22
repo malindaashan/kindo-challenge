@@ -24,4 +24,4 @@ jobs:
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
           script: |
-            ./deployment.sh
+              /opt/kindo-challenge/deployment.sh >> deployment.log 2>&1
