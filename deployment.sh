@@ -16,13 +16,14 @@ npm install
 
 npm run build
 
-cp -r build/* static/*
+cp -r /opt/kindo-challenge/kindo-challenge-ui/build/* /opt/kindo-challenge/kindo-challenge-ui/static/*
 
 cd ../
 
-cd kindochallengebackend/
 
-source myenv/nv/bin/activate
+source /opt/kindo-challenge/kindochallengebackend/myenv/nv/bin/activate
+
+cd  /opt/kindo-challenge/kindochallengebackend
 
 uvicorn kindoapp.main:app --host 0.0.0.0 --port 8000 &
 
