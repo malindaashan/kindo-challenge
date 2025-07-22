@@ -15,9 +15,8 @@ npm install
 
 npm run build
 
-cp -r /opt/kindo-challenge/kindo-challenge-ui/build/* /opt/kindo-challenge/kindo-challenge-ui/static
+sudo cp -r /opt/kindo-challenge/kindo-challenge-ui/build/* /opt/kindo-challenge/kindo-challenge-ui/static
 
-cd ../
 
 
 source /opt/kindo-challenge/kindochallengebackend/myenv/nv/bin/activate
