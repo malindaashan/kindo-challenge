@@ -53,6 +53,7 @@ function KindoDashboardPageContent({pathname}: { pathname: string }) {
                         flexDirection: 'column',
                         alignItems: 'center',
                         textAlign: 'center',
+                        color:'green'
                     }}
                 >
                     <Typography>Welcome to Kindo Challenge. Please navigate to the Upcoming Trips</Typography>
