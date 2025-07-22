@@ -71,6 +71,6 @@ def generate_unique_request_id(length):
     return int(''.join([str(random.randint(0, 10)) for _ in range(length)]))
 
 
-@app.get("/servicecheck")
+@app.get("/kindo/servicecheck")
 async def service_check():
     return {"message": "This is servicecheck message from kindo app"}
