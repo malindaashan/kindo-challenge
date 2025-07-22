@@ -19,11 +19,11 @@ sudo cp -r /opt/kindo-challenge/kindo-challenge-ui/build/* /opt/kindo-challenge/
 
 
 
-source /opt/kindo-challenge/kindochallengebackend/myenv/nv/bin/activate
+source /opt/kindo-challenge/kindochallengebackend/myenv/bin/activate
 
 cd  /opt/kindo-challenge/kindochallengebackend
 
-uvicorn kindoapp.main:app --host 0.0.0.0 --port 8000 &
+uvicorn /opt/kindo-challenge/kindochallengebackend/kindoapp.main:app --host 0.0.0.0 --port 8000 &
 
 sudo systemctl status nginx.service
 
