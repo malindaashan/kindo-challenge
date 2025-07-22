@@ -5,8 +5,7 @@ echo "Starting deployment script..."
 fuser -k -n tcp 8000
 cd /opt/kindo-challenge/kindo-challenge-ui/
 
-sudo rm -rf kindo-challenge-ui/build
-sudo rm -rf kindo-challenge-ui/static
+sudo rm -rf /opt/kindo-challenge/kindo-challenge-ui/kindo-challenge-ui/build
 
 
 sudo mkdir /opt/kindo-challenge/kindo-challenge-ui/static
@@ -16,7 +15,7 @@ npm install
 
 npm run build
 
-cp -r /opt/kindo-challenge/kindo-challenge-ui/build/* /opt/kindo-challenge/kindo-challenge-ui/static/*
+cp -r /opt/kindo-challenge/kindo-challenge-ui/build/* /opt/kindo-challenge/kindo-challenge-ui/static
 
 cd ../
 
