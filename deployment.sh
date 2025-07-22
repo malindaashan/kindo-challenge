@@ -21,7 +21,7 @@ sudo chown -R ec2-user:ec2-user /opt/kindo-challenge/kindo-challenge-ui/static
 
 source /opt/kindo-challenge/kindochallengebackend/myenv/bin/activate
 
-sudo cd  /opt/kindo-challenge/kindochallengebackend
+cd  /opt/kindo-challenge/kindochallengebackend
 
 uvicorn kindoapp.main:app --host 0.0.0.0 --port 8000 &
 
